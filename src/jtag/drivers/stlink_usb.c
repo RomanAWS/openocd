@@ -77,6 +77,7 @@
 
 #define STLINK_V1_PID         (0x3744)
 #define STLINK_V2_PID         (0x3748)
+#define STLINK_V2_1_VCP_PID   (0x374A)
 #define STLINK_V2_1_PID       (0x374B)
 #define STLINK_V2_1_NO_MSD_PID  (0x3752)
 #define STLINK_V3_USBLOADER_PID (0x374D)
@@ -1278,6 +1279,7 @@ static int stlink_usb_version(void *handle)
 	h->pid = le_to_h_u16(h->databuf + 4);
 
 	switch (h->pid) {
+	case STLINK_V2_1_VCP_PID:
 	case STLINK_V2_1_PID:
 	case STLINK_V2_1_NO_MSD_PID:
 		if ((x <= 22 && y == 7) || (x >= 25 && y >= 7 && y <= 12)) {
@@ -3445,6 +3447,7 @@ static int stlink_usb_usb_open(void *handle, struct hl_interface_param_s *param)
 				h->tx_ep = STLINK_V2_1_TX_EP;
 				h->trace_ep = STLINK_V2_1_TRACE_EP;
 				break;
+			case STLINK_V2_1_VCP_PID:
 			case STLINK_V2_1_PID:
 			case STLINK_V2_1_NO_MSD_PID:
 				h->version.stlink = 2;
